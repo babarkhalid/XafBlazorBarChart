@@ -1,0 +1,56 @@
+﻿@using DevExpress.ExpressApp
+@using DevExpress.ExpressApp.Blazor.Services
+@using XafBlazorBarChart.Module.BusinessObjects;
+@inject IXafApplicationProvider XafApplicationProvider
+@inject NavigationManager NavigationManager
+
+@if (SalesData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DxPivotGrid Data="@SalesData" CssClass="w-100">
+        <DxPivotGridField Field="@nameof(SaleInfo.Region)" SortOrder="PivotGridSortOrder.Ascending" Area="PivotGridFieldArea.Row" />
+        <DxPivotGridField Field="@nameof(SaleInfo.Country)" Area="PivotGridFieldArea.Row" />
+        <DxPivotGridField Field="@nameof(SaleInfo.City)" Area="PivotGridFieldArea.Row" />
+        <DxPivotGridField Field="@nameof(SaleInfo.Date)" GroupInterval="PivotGridGroupInterval.Year" Area="PivotGridFieldArea.Column" Caption="Year" />
+        <DxPivotGridField Field="@nameof(SaleInfo.Date)" GroupInterval="PivotGridGroupInterval.Quarter" Area="PivotGridFieldArea.Column" Caption="Quarter">
+            <HeaderTemplate>@string.Format("Q{0}", context)</HeaderTemplate>
+        </DxPivotGridField>
+        <DxPivotGridField Field="@nameof(SaleInfo.Amount)" Area="PivotGridFieldArea.Data" SummaryType="PivotGridSummaryType.Sum" />
+        <DxPivotGridField Field="@nameof(SaleInfo.Oid)" Caption="Count" Area="PivotGridFieldArea.Data" SummaryType="PivotGridSummaryType.Count" />
+    </DxPivotGrid>
+}
+<DxChart Data="@SalesData">
+    <DxChartTitle Text="Sales Info">
+        <DxChartSubTitle Text="Month-wise" />
+    </DxChartTitle>
+    <DxChartBarSeries Name="January"
+                      Filter="@((SaleInfo s) => s.Date.Month == 1)"
+                      ArgumentField="@(s => s.Region)"
+                      ValueField="@(s => s.Amount)"
+                      SummaryMethod="Enumerable.Sum" />
+    <DxChartBarSeries Name="February"
+                      Filter="@((SaleInfo s) => s.Date.Month == 2)"
+                      ArgumentField="@(s => s.Region)"
+                      ValueField="@(s => s.Amount)"
+                      SummaryMethod="Enumerable.Sum" />
+    <DxChartLegend Position="RelativePosition.Outside"
+                   HorizontalAlignment="HorizontalAlignment.Center"
+                   VerticalAlignment="VerticalEdge.Bottom" />
+    <DxChartTooltip Enabled="true"
+                    Position="RelativePosition.Outside">
+    </DxChartTooltip>
+</DxChart>
+
+@code {
+    IEnumerable<SaleInfo> SalesData;
+    protected override void OnInitialized()
+    {
+        var Application = XafApplicationProvider.GetApplication();
+        IObjectSpace os = Application.CreateObjectSpace(typeof(SaleInfo));
+        SalesData = os.GetObjects<SaleInfo>().OrderBy(x => x.Date.Month);
+    }
+}
+

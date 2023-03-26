@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <NavigationItems NavigationStyle="Accordion">
+    <Items>
+      <Item Id="Default">
+        <Items>
+          <Item Id="@0dbf7fa1-3171-46e9-9206-f4d8dae77800" ViewId="IssueChartView" IsNewNode="True" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
+  <SchemaModules>
+    <SchemaModule Name="CloneObjectModule" Version="22.2.4.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="22.2.4.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views DefaultListEditor="DevExpress.ExpressApp.Blazor.Editors.DxGridListEditor">
+    <DashboardView Id="IssueChartView" Caption="Sales Info Pivot &amp; Chart" IsNewNode="True">
+      <HiddenActions IsNewNode="True">
+        <ActionLink ActionId="OrganizeDashboard" IsNewNode="True" />
+        <ActionLink ActionId="Refresh" IsNewNode="True" />
+        <ActionLink ActionId="RefreshAction" IsNewNode="True" />
+      </HiddenActions>
+      <Items IsNewNode="True">
+        <ControlDetailItem Id="Issue_ChartView_DB" ControlTypeName="XafBlazorBarChart.Blazor.Server.Pages.IssueChartViewAdapter" IsNewNode="True" />
+      </Items>
+      <Layout IsNewNode="True">
+        <LayoutGroup Id="Main" ShowCaption="False" Caption="Main(1)" Index="0" RelativeSize="100" IsNewNode="True">
+          <LayoutItem Id="Issue_ChartView_DB" ViewItem="Issue_ChartView_DB" Index="0" RelativeSize="100" IsNewNode="True" />
+        </LayoutGroup>
+      </Layout>
+    </DashboardView>
+  </Views>
+</Application>

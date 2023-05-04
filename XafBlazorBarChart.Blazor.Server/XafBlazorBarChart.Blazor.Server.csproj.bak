@@ -17,12 +17,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="22.2.6" />
-    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="22.2.6" />
-    <PackageReference Include="DevExpress.ExpressApp.Dashboards.Blazor" Version="22.2.6" />
-    <PackageReference Include="DevExpress.ExpressApp.FileAttachment.Blazor" Version="22.2.6" />
-    <PackageReference Include="DevExpress.ExpressApp.ReportsV2.Blazor" Version="22.2.6" />
-    <PackageReference Include="DevExpress.ExpressApp.Validation.Blazor" Version="22.2.6" />
+    <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.Dashboards.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.FileAttachment.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.ReportsV2.Blazor" Version="22.2.4" />
+    <PackageReference Include="DevExpress.ExpressApp.Validation.Blazor" Version="22.2.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XafBlazorBarChart.Module\XafBlazorBarChart.Module.csproj" />

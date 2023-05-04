@@ -1,5 +1,7 @@
-﻿@using DevExpress.ExpressApp
+﻿@using DevExpress.Data.Filtering;
+@using DevExpress.ExpressApp
 @using DevExpress.ExpressApp.Blazor.Services
+@using DevExpress.ExpressApp.Blazor;
 @using XafBlazorBarChart.Module.BusinessObjects;
 @inject IXafApplicationProvider XafApplicationProvider
 @inject NavigationManager NavigationManager
@@ -10,8 +12,16 @@
 }
 else
 {
+    <p>Select Region:
+    <DxComboBox Data="@RegionData"
+            @bind-Value="CurrentRegion"
+            TextFieldName="@nameof(Region.Name)"
+            SelectedItemChanged="@((Region region) => SelectedRegionChanged(region))"
+                CssClass="w-50" />
+    </p>
+ <br />
     <DxPivotGrid Data="@SalesData" CssClass="w-100">
-        <DxPivotGridField Field="@nameof(SaleInfo.Region)" SortOrder="PivotGridSortOrder.Ascending" Area="PivotGridFieldArea.Row" />
+        <DxPivotGridField Field="@nameof(SaleInfo.RegionName)" SortOrder="PivotGridSortOrder.Ascending" Area="PivotGridFieldArea.Row" />
         <DxPivotGridField Field="@nameof(SaleInfo.Country)" Area="PivotGridFieldArea.Row" />
         <DxPivotGridField Field="@nameof(SaleInfo.City)" Area="PivotGridFieldArea.Row" />
         <DxPivotGridField Field="@nameof(SaleInfo.Date)" GroupInterval="PivotGridGroupInterval.Year" Area="PivotGridFieldArea.Column" Caption="Year" />
@@ -28,12 +38,12 @@ else
     </DxChartTitle>
     <DxChartBarSeries Name="January"
                       Filter="@((SaleInfo s) => s.Date.Month == 1)"
-                      ArgumentField="@(s => s.Region)"
+                      ArgumentField="@(s => s.SalesRegion.Name)"
                       ValueField="@(s => s.Amount)"
                       SummaryMethod="Enumerable.Sum" />
     <DxChartBarSeries Name="February"
                       Filter="@((SaleInfo s) => s.Date.Month == 2)"
-                      ArgumentField="@(s => s.Region)"
+                      ArgumentField="@(s => s.SalesRegion.Name)"
                       ValueField="@(s => s.Amount)"
                       SummaryMethod="Enumerable.Sum" />
     <DxChartLegend Position="RelativePosition.Outside"
@@ -45,12 +55,22 @@ else
 </DxChart>
 
 @code {
-    IEnumerable<SaleInfo> SalesData;
+    IEnumerable<SaleInfo> SalesData { get; set; }
+    IEnumerable<Region> RegionData { get; set; }
+    Region CurrentRegion { get; set; }
+    BlazorApplication Application { get; set; }
+    IObjectSpace os { get; set; }
     protected override void OnInitialized()
     {
-        var Application = XafApplicationProvider.GetApplication();
-        IObjectSpace os = Application.CreateObjectSpace(typeof(SaleInfo));
-        SalesData = os.GetObjects<SaleInfo>().OrderBy(x => x.Date.Month);
+        Application = XafApplicationProvider.GetApplication();
+        os = Application.CreateObjectSpace(typeof(SaleInfo));
+        RegionData = os.GetObjects<Region>();
+        SelectedRegionChanged(CurrentRegion);
+    }
+
+    void SelectedRegionChanged(Region region)
+    {
+        SalesData = os.GetObjects<SaleInfo>(new BinaryOperator("SalesRegion", region)).OrderBy(x => x.Date.Month);
     }
 }
 

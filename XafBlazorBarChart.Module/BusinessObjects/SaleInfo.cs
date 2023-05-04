@@ -27,12 +27,17 @@ namespace XafBlazorBarChart.Module.BusinessObjects
             // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
         }
 
-        private string _region;
-        [Size(50)]
-        public string Region
+        [XafDisplayName("Region")]
+        [VisibleInDashboards(false)]
+        [VisibleInDetailView(false)]
+        [VisibleInListView(false)]
+        public string RegionName => SalesRegion.Name;
+
+        private Region _SalesRegion;
+        public Region SalesRegion
         {
-            get { return _region; }
-            set { SetPropertyValue(nameof(Region), ref _region, value); }
+            get { return _SalesRegion; }
+            set { SetPropertyValue<Region>(nameof(SalesRegion), ref _SalesRegion, value); }
         }
 
         private string _country;
